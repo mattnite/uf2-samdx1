@@ -10,7 +10,7 @@
 // Overlap 4x chars by this much.
 #define CHAR4_KERNING 2
 // Width of a single 4x char, adjusted by kerning
-#define CHAR4_KERNED_WIDTH  (6 * 4 - CHAR4_KERNING)
+#define CHAR4_KERNED_WIDTH (6 * 4 - CHAR4_KERNING)
 
 #define ST7735_NOP 0x00
 #define ST7735_SWRESET 0x01
@@ -398,32 +398,42 @@ void draw_hf2() {
     draw_screen();
 }
 
+#define SYCL_STR "SYCL"
+void draw_start() {
+    // center SYCL on screen
+    //
+    //
+
+    int sycl_x = (DISPLAY_WIDTH - (6 * 4 - CHAR4_KERNING) * (int)strlen(SYCL_STR)) / 2;
+    print4(sycl_x, 47, 1, SYCL_STR);
+
+    draw_screen();
+}
+
 void draw_drag() {
     drawBar(0, 52, 7);
     drawBar(52, 55, 8);
     drawBar(107, 14, 4);
 
     // Center PRODUCT_NAME and UF2_VERSION_BASE.
-    int name_x = (DISPLAY_WIDTH - (6 * 4 - CHAR4_KERNING) * (int) strlen(PRODUCT_NAME)) / 2;
+    int name_x = (DISPLAY_WIDTH - (6 * 4 - CHAR4_KERNING) * (int)strlen(PRODUCT_NAME)) / 2;
     print4(name_x >= 0 ? name_x : 0, 5, 1, PRODUCT_NAME);
-    int version_x = (DISPLAY_WIDTH - 6 * (int) strlen(UF2_VERSION_BASE)) / 2;
+    int version_x = (DISPLAY_WIDTH - 6 * (int)strlen(UF2_VERSION_BASE)) / 2;
     print(version_x >= 0 ? version_x : 0, 40, 6, UF2_VERSION_BASE);
-    print(23, 110, 1, "arcade.makecode.com");
+    print(23, 110, 1, "softwareyoucan.love");
 
 #define DRAG 70
 #define DRAGX 10
     printicon(DRAGX + 20, DRAG + 5, 1, fileLogo);
     printicon(DRAGX + 66, DRAG, 1, arrowLogo);
     printicon(DRAGX + 108, DRAG, 1, pendriveLogo);
-    print(10, DRAG - 12, 1, "arcade.uf2");
+    print(10, DRAG - 12, 1, "badge.uf2");
     print(90, DRAG - 12, 1, VOLUME_LABEL);
 
     draw_screen();
 }
 
-void screen_early_init() {
-    setup_output_pin(CFG_PIN_DISPLAY_BL);
-}
+void screen_early_init() { setup_output_pin(CFG_PIN_DISPLAY_BL); }
 
 void screen_init() {
     if (lookupCfg(CFG_PIN_DISPLAY_SCK, 1000) == 1000)
@@ -449,13 +459,13 @@ void screen_init() {
     sendCmdSeq(initCmds);
 
     uint32_t cfg0 = CFG(DISPLAY_CFG0);
-    //uint32_t cfg2 = CFG(DISPLAY_CFG2);
+    // uint32_t cfg2 = CFG(DISPLAY_CFG2);
     uint32_t frmctr1 = CFG(DISPLAY_CFG1);
     palXOR = (cfg0 & 0x1000000) ? 0xffffff : 0x000000;
     uint32_t madctl = cfg0 & 0xff;
     uint32_t offX = (cfg0 >> 8) & 0xff;
     uint32_t offY = (cfg0 >> 16) & 0xff;
-    //uint32_t freq = (cfg2 & 0xff);
+    // uint32_t freq = (cfg2 & 0xff);
 
     // DMESG("configure screen: FRMCTR1=%p MADCTL=%p SPI at %dMHz", frmctr1, madctl, freq);
     configure(madctl, frmctr1);

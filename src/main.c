@@ -81,6 +81,7 @@
 #include "uf2.h"
 
 static void check_start_application(void);
+//static void play_start_tone(void);
 
 static volatile bool main_b_cdc_enable = false;
 extern int8_t led_tick_step;
@@ -313,6 +314,11 @@ int main(void) {
     RGBLED_set_color(COLOR_START);
     led_tick_step = 10;
 
+#if USE_SCREEN
+    screen_init();
+    draw_start();
+#endif
+
     /* Wait for a complete enum on usb or a '#' char on serial line */
     while (1) {
         if (USB_Ok()) {
@@ -325,7 +331,6 @@ int main(void) {
                 led_tick_step = 1;
 
 #if USE_SCREEN
-                screen_init();
                 draw_drag();
 #endif
             }

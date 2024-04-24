@@ -15,9 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #include "configkeys.h"
-
 
 #undef DISABLE
 #undef ENABLE
@@ -60,11 +58,7 @@
 // Doesn't yet disable code, just enumeration
 #define USE_MSC 1
 
-#ifdef BOARD_SCREEN
 #define USE_SCREEN 1
-#else
-#define USE_SCREEN 0
-#endif
 
 // If enabled, bootloader will start on power-on and every reset. A second reset
 // will start the app. This only happens if the app says it wants that (see SINGLE_RESET() below).
@@ -351,6 +345,7 @@ void draw_hf2(void);
 void draw_drag(void);
 void screen_init(void);
 void screen_early_init(void);
+void draw_start(void);
 #endif
 
 #endif
